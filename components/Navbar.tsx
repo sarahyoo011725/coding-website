@@ -1,7 +1,13 @@
+"use client"
+
+import { useAuth } from '@/app/auth/AuthContext';
+import { logout } from '@/app/login/firebase';
 import Link from 'next/link'
-import React from 'react'
 
 const Navbar = () => {
+  const { user } = useAuth();
+  console.log(user)
+
   return (
     <header className='px-5 py-3 bg-white shadow-sm'>
       <nav className='flex justify-between items-center'>
@@ -10,7 +16,14 @@ const Navbar = () => {
         </Link>
 
         <div className='flex items-center gap-5'>
-            <h1>login</h1>
+          {user ? (
+            <>
+              <span>{user?.displayName}</span>
+              <button onClick={logout}>Sign out</button>
+            </>
+          ) : (
+            <Link href='/login'>Sign in</Link>
+          )}
             <Link href='/problem'>Problems</Link>
         </div>
       </nav>
