@@ -6,7 +6,7 @@ const fetchProblems = async (uid: string): Promise<Problem[]> => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/problem/${uid}`, {
     cache: 'force-cache', 
     next: {
-      revalidate: 60
+      revalidate: 10
     }
   },);
 

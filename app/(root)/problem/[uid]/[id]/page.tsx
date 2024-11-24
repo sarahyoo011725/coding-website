@@ -3,17 +3,16 @@ import DefaultAnalysis from './DefaultAnalysis';
 import Loading from './Loading';
 import { Problem } from '@/app/types';
 import AiAnalysis from './AiAnalysis';
+import DeleteButton from './DeleteButton';
 
 const fetchProblem = async (uid: string, id: string): Promise<Problem> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/problem/${uid}/${id}`, {
-    cache: 'no-store', 
-  });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/problem/${uid}/${id}`);
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch problem: ${response.statusText}`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch problem: ${res.statusText}`);
   }
 
-  const result = await response.json();
+  const result = await res.json();
   return result.data as Problem;
 };
 
@@ -30,6 +29,7 @@ const page = async ({ params }: { params: Promise<{ uid: string; id: string }> }
           <AiAnalysis problem={problem} />
         </Suspense>
       </section>
+      <DeleteButton uid={uid} id={id}/>
     </div>
   );
 };
