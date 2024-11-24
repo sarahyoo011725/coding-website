@@ -6,12 +6,12 @@ import {
     GoogleAuthProvider, 
     useDeviceLanguage as setDeviceLanguage, 
     signInWithPopup, 
-    signOut, 
-    UserCredential 
+    signOut
 } from "firebase/auth";
 
 export const logout = async (): Promise<void> => {
-    return signOut(auth);
+  await signOut(auth);
+  await fetch('/api/logout');
 }
 
 export const getGoogleProvider = (auth: Auth) => {
@@ -30,14 +30,16 @@ export const getGoogleProvider = (auth: Auth) => {
   export const loginWithProvider = async (
     auth: Auth,
     provider: AuthProvider
-  ): Promise<UserCredential> => {
-    const result = await signInWithPopup(
+  ): Promise<void> => {
+    const credential = await signInWithPopup(
       auth,
       provider,
       browserPopupRedirectResolver
     );
-    console.log(result)
-  
-    return result;
+    const idToken = await credential.user.getIdToken();
+    await fetch('/api/login', {
+      headers: {
+        Authorization: `Bearer ${idToken}`
+      }
+    });
   };
-

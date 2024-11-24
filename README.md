@@ -1,3 +1,6 @@
+TODO:
+1. fix cors error when sign in with popup
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

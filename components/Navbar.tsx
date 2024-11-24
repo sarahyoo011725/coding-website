@@ -3,10 +3,16 @@
 import { useAuth } from '@/app/auth/AuthContext';
 import { logout } from '@/app/login/firebase';
 import Link from 'next/link'
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
   const { user } = useAuth();
-  console.log(user)
+  const router = useRouter();
+
+  async function handleLogout() {
+    await logout();
+    router.push('/login');
+  }
 
   return (
     <header className='px-5 py-3 bg-white shadow-sm'>
@@ -19,12 +25,12 @@ const Navbar = () => {
           {user ? (
             <>
               <span>{user?.displayName}</span>
-              <button onClick={logout}>Sign out</button>
+              <button onClick={handleLogout}>Sign out</button>
+              <Link href={`/problem/${user.uid}`}>Problems</Link>
             </>
           ) : (
             <Link href='/login'>Sign in</Link>
           )}
-            <Link href='/problem'>Problems</Link>
         </div>
       </nav>
     </header>
