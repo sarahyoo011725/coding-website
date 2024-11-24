@@ -11,7 +11,7 @@ const badgeColors : Record<ProblemStatus, string> = {
     [ProblemStatus.JustSolved]: 'bg-purple-400',
     [ProblemStatus.StillHard]: 'bg-red-400',
     [ProblemStatus.NeedsToReview]: 'bg-orange-400',
-    [ProblemStatus.JustReviewd]: 'bg-blue-400',
+    [ProblemStatus.JustReviewed]: 'bg-blue-400',
     [ProblemStatus.EasyNow]: 'bg-green-400'
 }
 

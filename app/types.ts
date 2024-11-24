@@ -6,18 +6,18 @@ export const enum ProblemStatus {
     JustSolved = 'Just solved',
     StillHard = 'Still hard',
     NeedsToReview = 'Needs to review',
-    JustReviewd = 'Just reviewed',
+    JustReviewed = 'Just reviewed',
     EasyNow = 'Easy now'
 }
 
 export type Problem = {
-    id?: string;
+    id: string;
     title: string;
     description: string;
     user_solution: string;
     date_solved?: Timestamp;
     difficulty: number;
-    status?: string;
+    status: string;
     topics: string[];
     time_complexity: string;
     space_complexity: string;

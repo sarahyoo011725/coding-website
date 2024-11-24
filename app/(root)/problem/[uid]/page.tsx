@@ -1,27 +1,49 @@
 import { Problem, ProblemStatus } from '@/app/types';
-import ProblemColumn from '../ProblemColumn';
+import { lazy, Suspense } from 'react';
+const ProblemColumn = lazy(() => import('../ProblemColumn'));
 
-const page = async ({ params } : { params: Promise<{ uid: string }>}) => {
-  const { uid } = await params;
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/problem/${uid}`);
+const fetchProblems = async (uid: string): Promise<Problem[]> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/problem/${uid}`, {
+    cache: 'force-cache', 
+    next: {
+      revalidate: 60
+    }
+  },);
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch problems: ${res.statusText}`);
+  }
 
   const result = await res.json();
-  const problems = result.data as Problem[];
+  return result.data as Problem[];
+};
 
-  const filterProblemsByStatus = (status: ProblemStatus) => {
-    return problems.filter(p => p.status === status);
-  }
+const page = async ({ params }: { params: Promise<{ uid: string }> }) => {
+  const { uid } = await params; 
+  const problems = await fetchProblems(uid);
+
+  const filteredProblems = {
+    [ProblemStatus.JustSolved]: problems.filter((p) => p.status === ProblemStatus.JustSolved),
+    [ProblemStatus.StillHard]: problems.filter((p) => p.status === ProblemStatus.StillHard),
+    [ProblemStatus.NeedsToReview]: problems.filter((p) => p.status === ProblemStatus.NeedsToReview),
+    [ProblemStatus.JustReviewed]: problems.filter((p) => p.status === ProblemStatus.JustReviewed),
+    [ProblemStatus.EasyNow]: problems.filter((p) => p.status === ProblemStatus.EasyNow),
+  };
+
   return (
-    <>
-      <section  className='flex gap-4 justify-center bg-gray-200 pt-8 h-full'>
-        <ProblemColumn type={ProblemStatus.JustSolved} problems={filterProblemsByStatus(ProblemStatus.JustSolved)} uid={uid}/>
-        <ProblemColumn type={ProblemStatus.StillHard} problems={filterProblemsByStatus(ProblemStatus.StillHard)} uid={uid}/>
-        <ProblemColumn type={ProblemStatus.NeedsToReview} problems={filterProblemsByStatus(ProblemStatus.NeedsToReview)} uid={uid}/>
-        <ProblemColumn type={ProblemStatus.JustReviewd} problems={filterProblemsByStatus(ProblemStatus.JustReviewd)} uid={uid}/>
-        <ProblemColumn type={ProblemStatus.EasyNow} problems={filterProblemsByStatus(ProblemStatus.EasyNow)} uid={uid}/>
-      </section>
-    </>
-  )
-}
+    <section className="flex gap-4 justify-center bg-gray-200 pt-8 h-full">
+      <Suspense fallback={<div>Loading...</div>}>
+        {Object.entries(filteredProblems).map(([status, filtered], i) => (
+          <ProblemColumn
+            key={i}
+            type={status as ProblemStatus}
+            problems={filtered}
+            uid={uid}
+          />
+        ))}
+      </Suspense>
+    </section>
+  );
+};
 
 export default page
