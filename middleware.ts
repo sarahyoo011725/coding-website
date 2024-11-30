@@ -2,6 +2,7 @@ import { authMiddleware, redirectToHome, redirectToLogin } from "next-firebase-a
 import { NextRequest, NextResponse } from "next/server";
 import { clientConfig } from "./config/client-config";
 import { serverConfig } from "./config/server-config";
+import { redirect } from "next/navigation";
 
 const PUBLIC_PATHS = ['/login'];
 
@@ -16,7 +17,7 @@ export async function middleware(req: NextRequest) {
         serviceAccount: serverConfig.serviceAccount,
         handleValidToken: async({token, decodedToken}, headers) => {
             if (PUBLIC_PATHS.includes(req.nextUrl.pathname)) {
-                return redirectToHome(req);
+                return redirect(`/${decodedToken.uid}`);
             }
             return NextResponse.next({
                 request: {

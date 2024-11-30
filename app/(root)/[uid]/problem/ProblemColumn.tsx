@@ -24,7 +24,7 @@ const ProblemColumn = async ({ uid, type, problems } : PropsTypes) => {
 
         <div className="flex flex-col gap-2 mt-2">
             {problems.map((p, index) => (
-                <Link href={`/problem/${uid}/${p.id}`} key={index} className='btn bg-white'>
+                <Link href={`/${uid}/problem/${p.id}`} key={index} className='btn bg-white'>
                     {p.title}
                 </Link>
             ))}

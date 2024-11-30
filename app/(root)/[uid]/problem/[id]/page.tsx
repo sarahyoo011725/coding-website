@@ -6,14 +6,9 @@ import AiAnalysis from './AiAnalysis';
 import DeleteButton from './DeleteButton';
 
 const fetchProblem = async (uid: string, id: string): Promise<Problem> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/problem/${uid}/${id}`);
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch problem: ${res.statusText}`);
-  }
-
-  const result = await res.json();
-  return result.data as Problem;
+  const res = await (await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/${uid}/problem/${id}`)).json();
+  const data = await res.data;
+  return data as Problem;
 };
 
 const page = async ({ params }: { params: Promise<{ uid: string; id: string }> }) => {

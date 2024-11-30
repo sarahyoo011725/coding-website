@@ -1,21 +1,15 @@
 import { Problem, ProblemStatus } from '@/app/types';
 import { lazy, Suspense } from 'react';
-const ProblemColumn = lazy(() => import('../ProblemColumn'));
+const ProblemColumn = lazy(() => import('./ProblemColumn'));
 
 const fetchProblems = async (uid: string): Promise<Problem[]> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/problem/${uid}`, {
-    cache: 'force-cache', 
+  const res = await (await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/${uid}/problem`, {
+    cache: 'force-cache',
     next: {
       revalidate: 10
     }
-  },);
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch problems: ${res.statusText}`);
-  }
-
-  const result = await res.json();
-  return result.data as Problem[];
+  })).json();
+  return res.data as Problem[];
 };
 
 const page = async ({ params }: { params: Promise<{ uid: string }> }) => {

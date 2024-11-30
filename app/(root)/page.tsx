@@ -1,8 +1,12 @@
+import { TopicsChart } from "@/components"
 
-export default function Home() {
+const HomePage = () => {
+ 
   return (
-    <div>
-      This is homepage
-    </div>
-  );
+    <>
+      <TopicsChart />
+    </>
+  )
 }
+
+export default HomePage

@@ -26,7 +26,7 @@ const Navbar = () => {
             <>
               <span>{user?.displayName}</span>
               <button onClick={handleLogout}>Sign out</button>
-              <Link href={`/problem/${user.uid}`}>Problems</Link>
+              <Link href={`/${user.uid}/problem`}>Problems</Link>
             </>
           ) : (
             <Link href='/login'>Sign in</Link>
