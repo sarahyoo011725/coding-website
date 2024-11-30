@@ -1,5 +1,5 @@
 import { genAi } from "@/app/gemini";
-import { Problem } from "@/app/types";
+import { Problem, Weakness,  } from "@/app/types";
 import { SiLeetcode } from "react-icons/si";
 import SyntaxHighlighter from "react-syntax-highlighter";
 
@@ -16,7 +16,11 @@ type Analysis = {
 };
 
 
-const fetchAiAnalysis = async (problem: Problem): Promise<{ analysis: Analysis; similarProblems: SimilarProblem[] | null }> => {
+const fetchAiAnalysis = async (problem: Problem): Promise<{
+   analysis: Analysis; 
+   similarProblems: SimilarProblem[] | null;
+   weakness: Weakness | null;
+  }> => {
   const model = genAi.getGenerativeModel({
     model: "gemini-1.5-flash",
     generationConfig: { responseMimeType: "application/json" },
@@ -46,19 +50,47 @@ const fetchAiAnalysis = async (problem: Problem): Promise<{ analysis: Analysis; 
     * Do not return the same problem as the given problem.
   `;
 
-  const [analysisResult, similarProblemsResult] = await Promise.all([
+  const findWeakness = `
+    Based on the user's solution, find their weakness or mistakes that must be addressed to improve their coding skills.
+    Return the result in this JSON format:
+    weakness = { 'weakness' : string }
+    Return weakness;
+    If no weakness or mistakes are found, return null.
+
+    This is user's solution:
+    ${problem.user_solution}
+  `;
+
+  const [analysisResult, similarProblemsResult, weaknessResult] = await Promise.all([
     model.generateContent(analyzeCodePrompt),
     model.generateContent(getSimilarProblemsPrompt),
+    model.generateContent(findWeakness)
   ]);
 
   const analysis = JSON.parse(analysisResult.response.text());
   const similarProblems = JSON.parse(similarProblemsResult.response.text());
+  const weakness = JSON.parse(weaknessResult.response.text());
 
-  return { analysis, similarProblems };
+  return { analysis, similarProblems, weakness };
 };
 
-const AiAnalysis = async ({ problem }: { problem: Problem }) => {
-  const {analysis, similarProblems} = await fetchAiAnalysis(problem);
+const save_weakpoint = async(weakpoint : Weakness | null, uid: string): Promise<void> => {
+  if (!weakpoint?.weakness) return;
+  await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/weakpoints?uid=${uid}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      weakness: weakpoint.weakness
+    }),
+  });
+}
+
+const AiAnalysis = async ({ problem, uid }: { problem: Problem, uid: string }) => {
+  const {analysis, similarProblems, weakness } = await fetchAiAnalysis(problem);
+  //console.log(weakpoint)
+  save_weakpoint(weakness, uid);
 
   return (
     <div className="p-6 bg-slate-100 rounded-lg shadow-md">

@@ -21,7 +21,7 @@ const page = async ({ params }: { params: Promise<{ uid: string; id: string }> }
         <DefaultAnalysis problem={problem}/>
 
         <Suspense fallback={<Loading />}>
-          <AiAnalysis problem={problem} />
+          <AiAnalysis problem={problem} uid={uid} />
         </Suspense>
       </section>
       <DeleteButton uid={uid} id={id}/>

@@ -28,3 +28,7 @@ export type Topic = {
     name: string;
     count: number;
 }
+
+export type Weakness = {
+    weakness: string;
+}
