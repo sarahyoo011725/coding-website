@@ -18,7 +18,7 @@ const page = async ({ params }: { params: Promise<{ uid: string; id: string }> }
   return (
     <div className="h-full">
       <section className="grid lg:grid-cols-2 gap-4 md:p-10">
-        <DefaultAnalysis problem={problem}/>
+        <DefaultAnalysis problem={problem} pid={id}/>
 
         <Suspense fallback={<Loading />}>
           <AiAnalysis problem={problem} uid={uid} />

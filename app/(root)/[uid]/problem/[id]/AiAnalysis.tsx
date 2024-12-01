@@ -15,7 +15,6 @@ type Analysis = {
   solution?: string;
 };
 
-
 const fetchAiAnalysis = async (problem: Problem): Promise<{
    analysis: Analysis; 
    similarProblems: SimilarProblem[] | null;
