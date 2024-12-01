@@ -1,4 +1,4 @@
-import { genAi } from "@/app/gemini";
+import { model_json } from "@/app/gemini";
 import { Problem, Weakness,  } from "@/app/types";
 import { SiLeetcode } from "react-icons/si";
 import SyntaxHighlighter from "react-syntax-highlighter";
@@ -21,11 +21,6 @@ const fetchAiAnalysis = async (problem: Problem): Promise<{
    similarProblems: SimilarProblem[] | null;
    weakness: Weakness | null;
   }> => {
-  const model = genAi.getGenerativeModel({
-    model: "gemini-1.5-flash",
-    generationConfig: { responseMimeType: "application/json" },
-  });
-
   const analyzeCodePrompt = `
     Given the description, generate a concise suggestion of better efficiency and algorithms with an improved solution.
     The improved solution must be codes. Return null solution if there is no need of improving solution.
@@ -62,9 +57,9 @@ const fetchAiAnalysis = async (problem: Problem): Promise<{
   `;
 
   const [analysisResult, similarProblemsResult, weaknessResult] = await Promise.all([
-    model.generateContent(analyzeCodePrompt),
-    model.generateContent(getSimilarProblemsPrompt),
-    model.generateContent(findWeakness)
+    model_json.generateContent(analyzeCodePrompt),
+    model_json.generateContent(getSimilarProblemsPrompt),
+    model_json.generateContent(findWeakness)
   ]);
 
   const analysis = JSON.parse(analysisResult.response.text());

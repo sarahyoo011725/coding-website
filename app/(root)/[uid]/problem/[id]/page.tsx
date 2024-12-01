@@ -16,7 +16,7 @@ const page = async ({ params }: { params: Promise<{ uid: string; id: string }> }
   const problem = await fetchProblem(uid, id);
 
   return (
-    <div className="h-full bg-slate-200">
+    <div className="h-full">
       <section className="grid lg:grid-cols-2 gap-4 md:p-10">
         <DefaultAnalysis problem={problem}/>
 

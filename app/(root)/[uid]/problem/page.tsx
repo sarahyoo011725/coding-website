@@ -25,7 +25,7 @@ const page = async ({ params }: { params: Promise<{ uid: string }> }) => {
   };
 
   return (
-    <section className="flex gap-4 justify-center bg-gray-200 pt-8 h-full">
+    <section className="flex gap-4 justify-center pt-8 h-full">
       <Suspense fallback={<div>Loading...</div>}>
         {Object.entries(filteredProblems).map(([status, filtered], i) => (
           <ProblemColumn

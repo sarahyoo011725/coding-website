@@ -8,9 +8,9 @@ export async function GET(req: NextRequest) {
     const uid = url.searchParams.get('uid');
     
     try {
-        const docSnapshot = await getDoc(doc(db, `users/${uid}`));
-        if (docSnapshot.exists()) {
-            const topics = docSnapshot.data().topics as Topic[];
+        const userDoc = await getDoc(doc(db, `users/${uid}`));
+        if (userDoc.exists()) {
+            const topics = userDoc.data().topics as Topic[];
             return NextResponse.json({ data: topics }, { status: 200 });
         } else {
             return NextResponse.json({ error: 'This user does not exist' }, { status: 404 });
