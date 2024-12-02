@@ -3,12 +3,7 @@ import { lazy, Suspense } from 'react';
 const ProblemColumn = lazy(() => import('./ProblemColumn'));
 
 const fetchProblems = async (uid: string): Promise<Problem[]> => {
-  const res = await (await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/${uid}/problem`, {
-    cache: 'force-cache',
-    next: {
-      revalidate: 10
-    }
-  })).json();
+  const res = await (await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/${uid}/problem`)).json();
   return res.data as Problem[];
 };
 
