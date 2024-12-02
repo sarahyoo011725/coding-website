@@ -20,7 +20,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Leetcode Buddy",
+  title: "Codding Buddy",
   description: "Ai-driven coding website",
 };
 
