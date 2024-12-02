@@ -18,7 +18,7 @@ const Navbar = () => {
     <header className='px-5 py-3 bg-white shadow-sm'>
       <nav className='flex justify-between items-center'>
         <Link href='/' className="text-xl font-bold">
-            Leetcode Buddy
+            Coding Buddy
         </Link>
 
         <div className='flex items-center gap-5'>
