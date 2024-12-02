@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest) {
         serviceAccount: serverConfig.serviceAccount,
         handleValidToken: async({token, decodedToken}, headers) => {
             if (PUBLIC_PATHS.includes(req.nextUrl.pathname)) {
-                return redirect(`/${decodedToken.uid}`);
+                return redirect(`/`);
             }
             return NextResponse.next({
                 request: {
