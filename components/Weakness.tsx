@@ -3,7 +3,7 @@
 import { useAuth } from "@/app/auth/AuthContext"
 import { gemini_flash } from "@/app/gemini";
 import { getWeaknesses } from "@/app/utils"
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Weakness = () => {
     const { user } = useAuth();
