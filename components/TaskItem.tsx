@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react';
 import { Task } from './TodoList'
 import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
