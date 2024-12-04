@@ -57,6 +57,7 @@ async function generate_study_tasks(uid: string) {
         tasks = {'title': string, 'link': string, 'topics': string[], 'completed': false}
         Return tasks;
 
+        link is the source of the problem.
         Rank the problems in the order from the least studied topics to the most studied topics
         
         Input1:
@@ -88,7 +89,6 @@ const TodoList =  () => {
         if(!user) return;
         setLoading(true);
         const { practices, reviews } = await generate_study_tasks(user.uid);
-        console.log(reviews)
         setTasks([...reviews.tasks, ...practices.tasks]);
         setLoading(false);
     }

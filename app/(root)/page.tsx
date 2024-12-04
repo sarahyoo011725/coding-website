@@ -16,7 +16,7 @@ const HomePage = () => {
             <TopicsChart />
           </div>
           <div className="bg-white p-4 rounded-lg shadow-lg">
-            <h2 className="text-lg font-medium text-gray-700">Todo List</h2>
+            <h2 className="text-lg font-medium text-gray-700">Solve more to improve your weakness!</h2>
             <TodoList />
           </div>
         </div>
