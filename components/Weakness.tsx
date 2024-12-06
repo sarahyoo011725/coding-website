@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 declare global {
     interface Window {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ai: any;
     }
 }
@@ -23,24 +24,14 @@ const Weakness = () => {
     const [summary, setSummary] = useState('');
     const [loading, setLoading] = useState(false);
     const [summarizer, setSummarizer] = useState({
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         summarize: async (prompt: string) => {
-            console.log(prompt); //to preven build fail...
             return '';
         },
         destroy: () => {}
     });
     const [isAi, setIsAi] = useState(false);
     
-    const summarize_weakness = async(weakness_json_stringified: string) :Promise<string> => {
-        const prompt = `
-            Shortly summarize my weaknesses provided below in bullet points.
-            After that, provide any tips to improve their weaknesses in kind language.
-            ${weakness_json_stringified}
-            `;
-            const result = await summarizer.summarize(prompt);
-            summarizer.destroy();
-            return result;
-    }
     
     useEffect(() => {
         const init_ai = async() => {
@@ -53,7 +44,7 @@ const Weakness = () => {
         }
         init_ai();
     }, [])
-
+    
     useEffect(() => {
         if (!user) return;
         const summarizeWeakpoints = async () => {
@@ -64,8 +55,20 @@ const Weakness = () => {
             setLoading(false);
         }
         summarizeWeakpoints();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user])
-
+    
+    const summarize_weakness = async(weakness_json_stringified: string) :Promise<string> => {
+        const prompt = `
+            Shortly summarize my weaknesses provided below in bullet points.
+            After that, provide any tips to improve their weaknesses in kind language.
+            ${weakness_json_stringified}
+            `;
+            const result = await summarizer.summarize(prompt);
+            summarizer.destroy();
+            return result;
+    }
+    
   return (
     <div className="collapse bg-base-200 w-1/2">
         <input type="checkbox" />
