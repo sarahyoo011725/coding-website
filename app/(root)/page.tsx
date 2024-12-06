@@ -22,7 +22,7 @@ const HomePage = () => {
         </div>
 
         <div className="bg-white p-4 rounded-lg shadow-lg">
-          <h2 className="text-lg font-medium text-gray-700">Weakness Analysis</h2>
+          <h2 className="text-lg font-medium text-gray-700">Weakness Analysis (takes some time to generate summary...)</h2>
           <Weakness />
         </div>
       </main>
