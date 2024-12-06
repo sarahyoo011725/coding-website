@@ -24,6 +24,7 @@ const Weakness = () => {
     const [loading, setLoading] = useState(false);
     const [summarizer, setSummarizer] = useState({
         summarize: async (prompt: string) => {
+            console.log(prompt); //to preven build fail...
             return '';
         },
         destroy: () => {}
