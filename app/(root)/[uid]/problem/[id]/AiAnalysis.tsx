@@ -20,6 +20,8 @@ const fetchAiAnalysis = async (problem: Problem): Promise<{
    similarProblems: SimilarProblem[] | null;
    weakness: Weakness | null;
   }> => {
+
+
   const analyzeCodePrompt = `
     Given the description, generate a concise suggestion of better efficiency and algorithms with an improved solution.
     The improved solution must be codes. Return null solution if there is no need of improving solution.
