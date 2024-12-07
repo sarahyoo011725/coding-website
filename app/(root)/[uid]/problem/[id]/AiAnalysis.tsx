@@ -1,5 +1,6 @@
 import { model_json } from "@/app/gemini";
 import { Problem, Weakness,  } from "@/app/types";
+import { unstable_cache } from "next/cache"
 import { SiLeetcode } from "react-icons/si";
 import SyntaxHighlighter from "react-syntax-highlighter";
 
@@ -15,13 +16,10 @@ type Analysis = {
   solution?: string;
 };
 
-const fetchAiAnalysis = async (problem: Problem): Promise<{
-   analysis: Analysis; 
-   similarProblems: SimilarProblem[] | null;
-   weakness: Weakness | null;
-  }> => {
-
-
+const fetchAiAnalysis = unstable_cache(async (problem: Problem, uid: string ) : Promise<{
+  similarProblems: SimilarProblem[];
+  analysis: Analysis;
+}>=> {
   const analyzeCodePrompt = `
     Given the description, generate a concise suggestion of better efficiency and algorithms with an improved solution.
     The improved solution must be codes. Return null solution if there is no need of improving solution.
@@ -66,9 +64,14 @@ const fetchAiAnalysis = async (problem: Problem): Promise<{
   const analysis = JSON.parse(analysisResult.response.text());
   const similarProblems = JSON.parse(similarProblemsResult.response.text());
   const weakness = JSON.parse(weaknessResult.response.text());
+  
+  await save_weakpoint(weakness, uid);
 
-  return { analysis, similarProblems, weakness };
-};
+  return { 
+    analysis,
+    similarProblems,
+  };
+}, ['analysis'], { revalidate: false, tags: ['analysis'] });
 
 const save_weakpoint = async(weakpoint : Weakness | null, uid: string): Promise<void> => {
   if (!weakpoint?.weakness) return;
@@ -84,9 +87,7 @@ const save_weakpoint = async(weakpoint : Weakness | null, uid: string): Promise<
 }
 
 const AiAnalysis = async ({ problem, uid }: { problem: Problem, uid: string }) => {
-  const {analysis, similarProblems, weakness } = await fetchAiAnalysis(problem);
-  //console.log(weakpoint)
-  save_weakpoint(weakness, uid);
+  const { analysis, similarProblems } = await fetchAiAnalysis(problem, uid);
 
   return (
     <div className="p-6 bg-slate-100 rounded-lg shadow-md">

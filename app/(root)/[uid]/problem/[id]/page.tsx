@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 import DefaultAnalysis from './DefaultAnalysis';
 import Loading from './Loading';
 import { Problem } from '@/app/types';
