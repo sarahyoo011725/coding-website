@@ -11,7 +11,7 @@ type SimilarProblem = {
 };
 
 type Analysis = {
-  suggestion: string;
+  suggestion: string
   solution?: string;
 };
 

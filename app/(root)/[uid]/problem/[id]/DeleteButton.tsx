@@ -3,14 +3,14 @@
 import { redirect } from "next/navigation";
 
 async function deleteProblem(uid: string, id: string): Promise<void> {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/problem/${uid}/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_ORIGIN}/api/${uid}/problem/${id}`, {
       method: 'DELETE'
     });
 
     if (!res.ok) {
       throw new Error(`Failed to delete problem: ${res.statusText}`);
     }
-    redirect(`/problem/${uid}`)
+    redirect(`/${uid}/problem`)
  }
 
 const DeleteButton = ({ uid, id } : { uid: string, id: string }) => {
